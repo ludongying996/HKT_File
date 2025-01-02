@@ -1,0 +1,82 @@
+
+1、
+var bannerConfiguration = ContentMgr.getContent('homepage-banner-configuration');
+homepage-banner-configuration 可以在商家工具-内容素材中搜到对应的html文件
+
+
+2、
+<isslot id="home-brands-m" context="global" description="brands on homepage" />
+
+isslot类型的是动态模版，可以直接在商家管理工具的网页动态内容里配置
+
+<isif condition="${slotcontent != null}">
+    <isloop items="${slotcontent.content}" var="contentAsset">
+        <isprint value="${contentAsset.custom.body}" encoding="off"/>
+    </isloop>
+</isif>
+
+custom.body从哪里来的？api文档找不到，在开发者工具的系统对象参数
+
+        <div class="row">
+            <isloop items="${slotcontent.content}" var="category">
+                <isif condition="${'slotBannerImage' in category.custom && category.custom.slotBannerImage}">
+                    <div class="col-sm-6 col-md-4 category-item">
+                        <a href="${URLUtils.url('Search-Show', 'cgid', category.ID)}" title="${category.displayName}">
+                            <div class="category-tile">
+                                <img class="img-fluid" src="${category.custom.slotBannerImage.getURL()}" alt="${category.displayName}"/>
+                                <h1>
+                                    <isprint value="${category.displayName}" encoding="htmlcontent"/>
+                                </h1>
+                            </div>
+                        </a>
+                    </div>
+                </isif>
+            </isloop>
+        </div>
+
+category.custom.slotBannerImage，api文档找不到，在开发者工具的系统对象参数
+
+
+3、
+Effective Cartridge Path:	bc_job_components:int_cim_authorization:app_hkt_core:int_devtools:int_club_system_integration:int_cslshopapi:plugin_gtm:int_onepayment:plugin_wishlists:lib_productlist:app_storefront_base:plugin_apple_pay:plugin_facebook:plugin_payments:plugin_pinterest_commerce:plugin_web_payments:bc_content:core
+
+
+4、            
+<div class="service-app">
+                <iscontentasset aid="footer-service-app" />
+            </div>
+            <div class="follow-us-social-media">
+                <iscontentasset aid="footer-social-media" />
+            </div>
+            <div class="service-website">
+                <iscontentasset aid="footer-service-website" />
+            </div>
+			
+			
+<iscontentasset aid="footer-service-app" /> 这些文件可以在商家工具的内容资产找到
+
+
+5、
+<iscomment>
+            hook for Marketing Cloud connector & other integration which need to inject
+            logic at the page end
+            IMPORTANT: Note that this hook will be called to cached as well as uncached pages
+                        which means you need to put privacy information into another remote include
+        </iscomment>
+        ${dw.system.HookMgr.callHook('app.template.afterFooter', 'afterFooter', pdict) || ''}
+		
+		
+${dw.system.HookMgr.callHook('app.template.afterFooter', 'afterFooter', pdict) || ''} 
+
+app.template.afterFooter这种文件在代码里的scripts目录底下，然后在hooks.json中配置
+
+
+6、
+在开发管理的安全性选项中可以配置Pipeline/开始节点允许列表的csrf攻击
+
+7、Steptypes.json文件是存开发管理中的任务步骤类型配置
+
+
+8、代码里面bm_开头的是属于Business Manager插件，可以在管理-管理站点-管理 Business Manager 站点中配置上去，在管理-角色和权限-BM module中可以看到这些插件功能的菜单
+
+9、商家工具-Site Preferences-custom Preferences可以设置代码全局取值变量value，具体变量（例如excludedShippingDistrict），可以在管理-System Object Type -> SitePreferences处添加

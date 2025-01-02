@@ -1,0 +1,130 @@
+
+
+Mulesoft
+ 
+Anypoint Platform
+https://anypoint.mulesoft.com/accounts/login/hkt-6
+ 
+Anypoint Platform - Username Password
+https://pccw0.sharepoint.com/:t:/r/sites/CustomerSelfService/Shared%20Documents/General/Mulesoft/MULE_PW.txt?csf=1&web=1&e=vD4N8H
+ 
+Anypoint Studio Development Tool
+https://www.mulesoft.com/platform/studio
+ 
+Training - All Training Materials
+MuleSoft
+ 
+Training - Developer Onboarding Guide
+HKT MuleSoft Developer Onboarding Guide latest.pdf
+ 
+Training - Developer Guide
+HKT MuleSoft Developer Guide v1.docx
+
+
+CORPHQ-HK-PCCW\devmulapcss1
+Hktdevmulecss@66
+ 
+CORPHQ-HK-PCCW\devmulapcss2
+Hktdevmulecss@55
+ 
+CORPHQ-HK-PCCW\umulapcss   ---->uat
+Hktdevmulecss@66
+
+
+
+https://egit.btu.pccw.com/ruby/css/css-dam-mulesoft.git
+https://egit.btu.pccw.com/ruby/css/css-ecom-mulesoft.git
+
+
+视频：21:00 导出jar包发布流程：
+1、runtimeManager-setting-choose jar，传新代码之前一定要把原本的包先下载备份
+2、去properies看clientid和clientsecret，账号密码跟exchange my application 中的一样
+3、sercet key填写用openssl enc -aes-128-cbc -k secret -P –pbkdf2生成的key
+
+
+视频：00:11 改jwt token流程：
+1、在anypoint配置jwt token策略，填写ras公钥（问dean要）、填写clinet secret
+2、在salceforce 的 setting 的custom code中需要配置jwt的项目策略配置包里配置一个jwt token，在jwt.io的网站上可以生成这个token并填入，jwt.io网站上的sub填clientid ,aud填clientsercet
+
+{
+  "sub": "d096a345fee94912bf4624276f9de1f3",
+  "exp": 1726729764,
+  "aud": "232A95EAfB7f4CbEb321de4c2C9AdE48"
+}
+
+
+视频：00:00 改秘钥流程：
+只改dev和uat的证书
+
+1、从openssl下载网站共有SSL证书
+openssl s_client -showcerts -connect api.hubspot.com:443
+openssl s_client -connect https://t0.shop.theclub.com.hk/rest
+
+2、把证书的begin到end的内容复制成一个.cer文件，例如onepaymentuat.pccw.com.cer 文件
+
+3、将SSL证书添加到jks文件
+keytool -import -v -trustcacerts -storepass 123456 -alias onepaymentuat -file onepaymentuat.pccw.com.cer -keystore opp_truststore_uat.jks
+keytool -import -v -trustcacerts -storepass 123456 -alias onepaymentprod2024 -file onepayment.pccw.com.crt -keystore opp_truststore_prod.jks
+
+4、查看
+keytool -list -v -keystore lda_truststore.jks   这个要输秘钥：123456
+keytool -list -v -keystore opp_truststore_prod.jks
+
+
+
+如果自己起了一个web服务，搞了一个接口 /b2/user
+对外是http://32.90.90.0:9090/b2/user
+
+现在我只要搞一个mule project，配置一下这些和安全性，再发布到anypoint平台，用户就可以通过https://np3.muleamp.hkt.com/b2/user去访问了
+（fsta是
+np1.muleamp.hkt.com uata是np3.muleamp.hkt.com）
+proxy.path=/*
+proxy.port=9090
+proxy.responseTimeout=10000
+implementation.host=32.90.90.0
+implementation.port=443
+implementation.path=/
+implementation.protocol=HTTPS
+
+listener.keystore.path=./ecom-p1-client.hkt.com_123456.pfx
+listener.keystore.alias=1
+
+request.hubspot.truststore.path=./hub-truststore.jks
+
+
+
+mulesoft官网教程：
+https://docs.mulesoft.com/runtime-manager/deployment-strategies
+
+mulesoft初学者教程：
+https://www.jianshu.com/p/5bf42c8eca2f
+
+
+ssl/tsl原理：
+https://zhuanlan.zhihu.com/p/440612523
+
+
+
+
+
+调用salceforce创建对象
+https://www.awsquality.com/salesforce-integration-with-mulesoft/
+
+
+
+format output对象
+https://docs.mulesoft.com/dataweave/latest/dataweave-cookbook-exclude-field
+https://help.mulesoft.com/s/question/0D52T00005h35mrSAA/getting-array-in-output-response-how-can-we-remove-those-arrays
+
+
+
+
+
+java -cp secure-properties-tool.jar com.mulesoft.tools.SecurePropertiesTool file encrypt AES CBC 88F35C89D03F20CD87F6315254770D00 test_in.properties test_out.properties
+java -cp secure-properties-tool.jar com.mulesoft.tools.SecurePropertiesTool file decrypt AES CBC 88F35C89D03F20CD87F6315254770D00 test_in.properties test_out.properties
+
+
+
+${secure::sfdc.jwt.customerkey.password}
+
+${secure::listener.keystore.password}

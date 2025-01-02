@@ -1,0 +1,59 @@
+
+login id：x0ss0009     82012750
+pwd：Exlogin01abcde6
+
+加domin的account：CORPHQ-HK-PCCW\X0SS0009S
+
+电脑解锁密码:Hkt~!@pccwfs2024
+
+gitlab personal token：
+
+egit.btu.pccw.com:-oReXAAFuZ7ip6ZzjHhQ
+
+git.btu.pccw.com:i9XzgxZqJHHmJJSbLrzF      pBqzfnpPAxoEbATRQS39
+
+
+github 的ssh密码是：12345
+
+eDMS的uat环境的账号和密码：
+账号：p_edms_reportspace_rw
+密码：VggEy4g256+4uG5FG+DS5CxGCzTBunL778MY
+
+
+sandbox008秘钥：8nB{mFSUjDnJd*y2P}PI332(aqXGCpD(_9Ein6pf
+sandbox009秘钥：1lP?z2Ey_5]K*O1j4#Qgla8nEvBbG7~V7pe6?wBf
+
+
+sfcc-ci client:auth d23ecbb0-52c6-4029-818b-f38e68e1455d Hktrubycvp69876
+
+
+access code：cslstg   csluat
+
+
+jira：https://jira.bpuit.pccw.com:8443/secure/ManageRapidViews.jspa
+
+hkt各种账号申请流程：
+
+sap申请：https://pccw0.sharepoint.com/sites/PCCW.IT.GZ/SitePages/%E6%9C%8D%E5%8A%A1%E4%B8%8E%E6%94%AF%E6%8C%81.aspx?xsdata=MDV8MDF8fGIzNzlmNmIyNDc5ZTQ4M2JjNDAwMDhkYmNkZjBlNmZjfGM1OTI0ZGE2ZGViMzQyMWJhYTk4NTdiY2JhMGJhMDUwfDB8MHw2MzgzMzAyMDY3NTQyMjcyMDB8VW5rbm93bnxWR1ZoYlhOVFpXTjFjbWwwZVZObGNuWnBZMlY4ZXlKV0lqb2lNQzR3TGpBd01EQWlMQ0pRSWpvaVYybHVNeklpTENKQlRpSTZJazkwYUdWeUlpd2lWMVFpT2pFeGZRPT18MXxMMk5vWVhSekx6RTVPalk0TURnd00yWmxMVGxqTkdFdE5Ea3laaTA1TjJSbUxUTTVZbUk1TW1ZeFl6ZzJObDg0TUdabU9HWXpOQzB3WkRKaExUUm1OVFV0T1dZMlppMWlNamcxTXpsbVkyUmtOR05BZFc1eExtZGliQzV6Y0dGalpYTXZiV1Z6YzJGblpYTXZNVFk1TnpReU16ZzNOREE1Tmc9PXxhNjQ2ODBlNDM2ODc0OTg4YzQwMDA4ZGJjZGYwZTZmY3xmNzAyZjExNWE2OTQ0NGVkOTBjNzUzYzg2MzVlNTNhOQ%3D%3D&sdata=bS9oRXNYYjhQSDk3TGZDNFNCdWF3Vk1KRUJHR0NLYy9WN1VkZEx2WVhUZz0%3D&ovuser=c5924da6-deb3-421b-aa98-57bcba0ba050%2C01728112%40corphq.hk.pccw.com&OR=Teams-HL&CT=1699598133325&clickparams=eyJBcHBOYW1lIjoiVGVhbXMtRGVza3RvcCIsIkFwcFZlcnNpb24iOiI0OS8yMzEwMTIyNzcwOCIsIkhhc0ZlZGVyYXRlZFVzZXIiOmZhbHNlfQ%3D%3D
+
+查看sap工单申请：https://sap.pccw.com/user-record/
+
+
+
+*.ocpprd?.pccw.com;*.ocpuat.pccw.com;digispace-sit*.hkt.com;digispace-ft*.hkt.com;*.hkcsl.net;nspm-sc.pccw.com;*.uam.hkt.com;rcicd*.hkt.com;10.*;dmg.hkt.com;np2.dmsamp.hkt.com;*.itourtranslator.com;msghub-ocp*-a.hkt.com;*.speech.microsoft.com;ip-api.com;cn-shanghai.aliyuncs.com;openapi.youdao.com
+
+
+Project code - Project Name -
+CSLES-csl   eShop / Ruby CVP7 eCommerce
+DAM            Digital Asset Management
+SFMEM          Salesforce Marketing Events Management
+DIGIS          Digispace
+
+
+timesheet:
+https://tss.bpu.pccw.com:8443/
+
+
+
+connect系统：
+https://performancemanager10.successfactors.com/login?company=hktservice#/login

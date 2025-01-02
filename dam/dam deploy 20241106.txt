@@ -1,0 +1,88 @@
+
+dam deploy:
+
+
+
+check prod and epc env:   
+
+1、Named Credentials：
+Label	dam_to_mule
+Name	dam_to_mule
+URL	https://np1.muleamp.hkt.com                        ----->change to https://p1.muleamp.hkt.com  
+Hide Section - AuthenticationAuthentication
+Certificate	default
+Identity Type	Named Principal
+Authentication Protocol	No Authentication
+Hide Section - Callout OptionsCallout Options
+Generate Authorization Header	   empty
+Allow Merge Fields in HTTP Header	empty
+Allow Merge Fields in HTTP Body	   empty
+Outbound Network Connection	       empty
+
+
+2、check Certificate：
+default：update prod certificate  :ecom-p1-client.hkt.com
+
+
+3、check Custom Metadata Types：
+dam_Configuration：
+
+copy old configuration first
+
+BaseFolderPath：	/f/_sys/sfdc/	 	 
+BaseHubspotFolderAPIUrl：	callout:dam_to_mule/fst/a/css/hubspot/ms/api/v1/files/v3/folders    ——————>change to callout:dam_to_mule/css/hubspot/ms/api/v1/files/v3/folders 
+BaseHubspotUrl：	callout:dam_to_mule/fst/a/css/hubspot/ms/api/v1/files/v3/files  ——————>change to callout:dam_to_mule/css/hubspot/ms/api/v1/files/v3/files
+
+
+4、check the product page if can work after change to Named Credentials
+
+
+check epc env:
+
+1、check if the bug if has fixed
+
+epc link: operator know
+epc account:operator know
+epc sku: 4021211
+
+
+
+keytool -import -alias default_prod -file ecom-p1-client.hkt.com_123456.cer -keystore ecom-p1-client.hkt.com_123456.jks
+
+keytool -exportcert -alias default_prod -keystore ecom-p1-client.hkt.com_123456.jks -rfc -file ecom-p1-client.hkt.com_123456.pem
+
+
+keytool -importkeystore -srckeystore ecom-p1-client.hkt.com_123456.pfx -srcstoretype PKCS12 -destkeystore ecom-p1-client.hkt.com_123456.jks -deststoretype JKS
+
+keytool -delete -alias 1 -keystore ecom-p1-client.hkt.com_123456.jks
+
+keytool -importkeystore -srckeystore ecom-p1-client.hkt.com_123456.pfx -srcstoretype PKCS12 -destkeystore ecom-p1-client.hkt.com_123456.jks -deststoretype JKS -srcalias ecom -destalias mycertalias
+
+
+
+keytool -list -v -keystore ecom-p1-client.hkt.com_123456.pfx -storetype PKCS12
+
+
+openssl pkcs12 -export -in ecom-p1-client.hkt.com_123456.cer -inkey ecom-p1-client.hkt.com_123456.key -out ecom-p1-client.hkt.com_123456.p12
+
+keytool -importkeystore -srckeystore ecom-p1-client.hkt.com_123456.p12 -srcstoretype PKCS12 -destkeystore ecom-p1-client.hkt.com_123456.jks -deststoretype JKS
+
+keytool -importkeystore -srckeystore ecom-p1-client.hkt.com_123456.p12 -srcstoretype PKCS12 -destkeystore ecom-p1-client.hkt.com_123456.jks -deststoretype JKS -srcstorepass 123456 -deststorepass 123456 -alias mykeyalias
+
+
+
+Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI4YzlkNWUzY2M2MTM0NGQ4YWVmNzVlYTU4ZWM1N2E1YSIsImV4cCI6MjAzMjQ5NzI0NCwiYXVkIjoiYjA2QjNDNzI3ZTkyNDIxMUI1NWQxYzdkZjkyMWQ2NjQifQ.l3gWuipODzF0oNfBuccLXJdKS17V-X7GwoODtw_eZ4n3qAWc2pSFrpIlw6oDtTuiIEfeZ6-zVmx2nMOOwGrkYM9aYCNvFz5oFCWpfHTOTbf4ukWuQK32O7y1G50uUBqKN0dTWxAmPSHGmLk2ZFsMUDmvNv5Wyq2CCb8fwjaDcnhfBrHa4WRWvsA67BVNqUsq5XeDyt7sogCrIqRFH68EFqtzgoJkHAiqSXReekLvHNLcSMjWXRpmMdeuHl3OaJyJQpYlBz8RnlVOfEnd9QARNRZIQXXHMguW3lMyZUUwI1u_8z-BGYqQr-k1WPDI2HnKN57IsIDiaPDRzKXf3m9XtY4Pk36rJoj5PN8pZVnI7wXaL3sF8mM9mP0kwVgq93MfjZxsmYFiwRnlIB8yJpKIwNYS7C2LsfSOOhgync0pf1uihZ2CilQYsiBbGMvdLQb4_MHVK0BItNrJ9rfS0Tbv9ke-G00zLnc_bb6cVgrHtMy8T2X13jspkd-rbL181u_rYKQCKyx2myE8TVvrDlYJQVXXNzLTMtDp6gi2Kmppay-nf_3ffJZ3qMYiU-jbBRuDwD8HWSK1S96O6m6VVvlgXFg4nibF-Zrw9z8871PiEoFA9BnXesJ5iM6od-Q_8OckBV0NLEKIdTK2HGhnOuMyh5f3vyL8ezfGH4qFWnO-SIw
+
+
+
+
+Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJlNDFmZjFmZWU5ZTI0ZWU5OThhM2E2Y2ZjMzk0NWFjNCIsImV4cCI6MTc4OTc4MzM5MywiYXVkIjoiQUFEODA4OEMwYTlmNDk5YkI4NzYzOUVFNzZCNjcyNzkifQ.jt9G0waZRcYUZ8vQr2pSN_RJ8PZy7s8gR-ZX_FDRA76ng0nMnkJ-vtc-mYFn395JFvqG8a-mFfWFMm9zOxrFRIoTTY2J7UKu57BgOQFGLfOliC3VWqn7I3d4KR3rMrOXpDO5IPswt0wZcY2Br12QkcF79RkVfpZsQ7GDWFoNWgcSCcOsp3BBpypPoTP5Z630raMeH5PZQ53gyYlUfldGqecq-wNRP32fILtXVkfz-JVXjPOiav-XIQL5wqquopdjy6OkvYt4ZAWyn9gT-6KSMvOIgSFZMDS_Pn8vD4aJvAkQRqAtGk9vXKe9Zs7CeUvq7ri3d8fFJaJxl2qWe9GStD49iiUGAMskpp9gjCMuCDGdYfH2oLY46pPaT1AEDspS2Is0Fg6F7kaSYD-1XrDYTZS_cIrhPGTF9yzxVY5ivLWWm-9A1sf6Lnv4ImLUDCg_762qSDeVd0o1_d5xDVGWya5D2Uuzo6BX37WNLopwukDTU4c4zckzb2D-kkN-6tykzf79Wb7BsjzkYQgB0Sa-zfP05NUIbfRhBaiyVFLLU4vg52Io30PZ10rw5RaQw71Ri-KhgnLpdzmUKrdTiVZPrx7INzld0yG051Ju8Nz7lpgHz-QFCZJ-_p2UbEB9lmQdc8qmv3dbXUapY-ArYvObN19Vimgv2Sf4QO3La0nrObA
+
+
+
+
+
+BaseHubspotUrl	callout:dam_to_mule/css/hubspot/ms/api/v1/files/v3/files	 	 
+BaseFolderPath	/f/_sys/sfdc/	 	 
+BaseHubspotFolderAPIUrl	callout:dam_to_mule/css/hubspot/ms/api/v1/files/v3/folders	 	 
+JwtToken	Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJlNDFmZjFmZWU5ZTI0ZWU5OThhM2E2Y2ZjMzk0NWFjNCIsImV4cCI6MTc4OTc4MzM5MywiYXVkIjoiQUFEODA4OEMwYTlmNDk5YkI4NzYzOUVFNzZCNjcyNzkifQ.jt9G0waZRcYUZ8vQr2pSN_RJ8PZy7s8gR-ZX_FDRA76ng0nMnkJ-vtc-mYFn395JFvqG8a-mFfWFMm9zOxrFRIoTTY2J7UKu57BgOQFGLfOliC3VWqn7I3d4KR3rMrOXpDO5IPswt0wZcY2Br12QkcF79RkVfpZsQ7GDWFoNWgcSCcOsp3BBpypPoTP5Z630raMeH5PZQ53gyYlUfldGqecq-wNRP32fILtXVkfz-JVXjPOiav-XIQL5wqquopdjy6OkvYt4ZAWyn9gT-6KSMvOIgSFZMDS_Pn8vD4aJvAkQRqAtGk9vXKe9Zs7CeUvq7ri3d8fFJaJxl2qWe9GStD49iiUGAMskpp9gjCMuCDGdYfH2oLY46pPaT1AEDspS2Is0Fg6F7kaSYD-1XrDYTZS_cIrhPGTF9yzxVY5ivLWWm-9A1sf6Lnv4ImLUDCg_762qSDeVd0o1_d5xDVGWya5D2Uuzo6BX37WNLopwukDTU4c4zckzb2D-kkN-6tykzf79Wb7BsjzkYQgB0Sa-zfP05NUIbfRhBaiyVFLLU4vg52Io30PZ10rw5RaQw71Ri-KhgnLpdzmUKrdTiVZPrx7INzld0yG051Ju8Nz7lpgHz-QFCZJ-_p2UbEB9lmQdc8qmv3dbXUapY-ArYvObN19Vimgv2Sf4QO3La0nrObA

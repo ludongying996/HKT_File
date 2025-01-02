@@ -1,0 +1,168 @@
+
+
+mulesoft uatd：
+
+1、app--->App Manager--->new connect app
+
+Connected App Name:Mule_SFMEM
+Enable OAuth Settings:√
+Callback URL：https://localhost:8092/
+Use digital signatures：√  选择文件：ecom-np1-client.hkt.com_123456.crt(prod is ecom-p1-client.hkt.com_123456.crt)
+Selected OAuth Scopes：Manage user data via APIs (api)、Perform requests at any time (refresh_token, offline_access)
+Require Secret for Web Server Flow：√
+Require Secret for Refresh Token Flow：√
+
+
+2、Manage Connected Apps----->Mule_SFMEM----->Consumer Key and Secret(manage detail)-------> copy Consumer Key	
+3MVG9RGDcVlytYtdR8RW3TTa.RgKAFE2hDt_.Sj8agbvNjULtO4SRwpKW_ZcnkjSuRMI2Dlx6O9yOULORCXGR   ----->copy to prod config
+
+3、Manage Connected Apps---->Mule_SFMEM----->edit policese----->
+
+Permitted Users:admin approve
+
+4、Profiles---->manage profiles
+HKT Integration
+System Administrator
+
+
+
+
+
+5、Remote Site Settings---->new remote site
+
+Remote Site Name:sfmem_Hubspot_API
+Remote Site URL:https://np1.muleamp.hkt.com (prod is https://p1.muleamp.hkt.com )
+Description:Hubspot_API
+active:√
+
+
+6、ask for p1.muleamp.hkt.com.pfx file ,and jar -xvf XX.jar  ,then put this file in /css-sfmem-ms-api-v1/src/main/resources folder
+and copy this key 3MVG9RGDcVlytYtdR8RW3TTa.RgKAFE2hDt_.Sj8agbvNjULtO4SRwpKW_ZcnkjSuRMI2Dlx6O9yOULORCXGR in /css-sfmem-ms-api-v1/src/main/resources/properties/prod_config.properties ---->sfdc.jwt.customerkey
+then export jar and upload to mulesoft to deploy 
+
+
+novax setting：
+
+
+1、Digital Experiences---->All site----->EM_1O1O---->builder
+
+setting in left ----->developer---->export a page----->export Honor Magic V2 (PD)
+
+create two Customer page：
+
+setting in top-----> create new page---->Standard Page---->Honor Magic V2 (PD)
+
+page name: 1C2N
+api name:csl_1c2n_c
+page title: 革新版「中港一卡兩號」服務預約表格
+page title en: Enhanced China HK 1-Card-2-Number service   (right of top ----> small earth )
+url: https://event.hkcsl.com/s/enhanced-china-hk-1-card-2-number/
+event ID:a6zRC00000003IrYAI
+Page Access:Site Default Setting: Public
+
+event flow:O2O reservation
+
+
+page name: 1C2N
+api name:v1o1o_1c2n_c
+page title: 革新版「中港一卡兩號」服務預約表格 (right of top ----> small earth )
+page title en: Enhanced China HK 1-Card-2-Number service
+url: https://event.1010.com.hk/s/enhanced-china-hk-1-card-2-number/
+event ID:a6zRC00000003IrYAI
+Page Access:Site Default Setting: Public
+
+event flow:O2O reservation
+
+
+
+create AI Product Workshop page：
+
+setting in top----->under 1O1O Academy folder  ---> add new sub page--->Standard Page---->Honor Magic V2 (PD)
+
+page name: AI Product Workshop
+page title:1O1O Academy - AI Product Workshop
+url: https://event.1010.com.hk/s/1O1O-Academy/2024ai-onlineworkshop
+event ID: a6zRC00000003FdYAI
+Page Access:Site Default Setting: Public
+
+event flow:1O1O generic
+
+
+
+
+2、Custom Metadata Types--->new Custom Fields
+
+Data Type:Checkbox
+Field Label:Time Overlap Check
+Field Name:Time_Overlap_Check
+API Name:Time_Overlap_Check__c
+Default Value:Unchecked
+
+
+3、Custom Metadata Types---->Manage Event Metadata Settings----->new
+
+Label	Default
+Event Metadata Setting Name	default	 
+Maximum Times	3	 	 
+Minimum interval	1	 	 
+Date Limit Type	√	 	 
+Maximum Times In Period	3	 	 
+Absence Period	3	 	 
+Absence Period Type	× 	 
+Maximum Absence Times	3	 	 
+Maximum Session Number	10	 	 
+One registration per person	√	 	 
+Absence Check	× 	 
+Time Overlap Check	×
+
+
+
+Label	EM_1c2n
+Event Metadata Setting Name	em_1c2n	 
+Maximum Times	1	 	 
+Minimum interval	1	 	 
+Date Limit Type	×	 	 
+Maximum Times In Period	99,999,999	 	 
+Absence Period	1	 	 
+Absence Period Type	 ×	 	 
+Maximum Absence Times	1	 	 
+Maximum Session Number	99,999,999	 	 
+One registration per person	√	 	 
+Absence Check	×	 	 
+Time Overlap Check	×
+
+
+
+4、Custom Metadata Types---->EM CE Config----->new field "gateway"  ------> manage Manage EM CE Config------>set two record gatewat to "SMSC"
+
+
+5、Custom Metadata Types---->EM_Otp_Configuration----->new field "gateway"  ------> manage Manage EM CE Config------>set two record gatewat to "SMSC"
+
+
+6、Lightning Events---->1C2N----->detail----->MetaData Config Name----->EM_1c2n
+
+
+7、Flows---->Registration_Limit_Flow_001、Event_Registration_1010_Generic----->view detail----->active lasted verison
+
+
+
+
+
+
+
+
+
+
+
+
+check list：
+
+1、Manage Event Metadata Settings，check metadata config name---->1010 forms
+2、check https://event.hkcsl.com/s/enhanced-china-hk-1-card-2-number/
+https://event.1010.com.hk/s/enhanced-china-hk-1-card-2-number/
+https://event.1010.com.hk/s/1O1O-Academy/2024ai-onlineworkshop  
+include sms AND success sms
+3、check https://p1.muleamp.hkt.com/fst/a/css/hubspot/ms/api/v1/sfmem/eventRegistrations?eventIds=a6zA20000000LpFIAU&endDate=2024-05-07T03:00&startDate=2024-03-07T03:00
+https://p1.muleamp.hkt.com/fst/a/css/hubspot/ms/api/v1/files/v3/files/131319694857
+https://p3.muleamp.hkt.com/uat/a/css/hubspot/ms/api/v1/files/v3/files/131319694857
+4、check cancellation function

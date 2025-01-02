@@ -1,0 +1,33 @@
+
+
+copado：
+
+https://here2serve-cicd.my.salesforce.com/
+account：css@pccw.com.copado
+password：Hktrubycicd4
+
+
+
+excel：
+
+R和T行
+
+
+New item record excel:
+https://pccw0.sharepoint.com/:x:/r/sites/CustomerSelfService/_layouts/15/Doc.aspx?sourcedoc=%7BADB6C3E4-6C33-4168-9E42-85A011D69D77%7D&file=1010%20Components.xlsx&wdOrigin=TEAMS-MAGLEV.undefined_ns.rwc&action=default&mobileredirect=true&isSPOFile=1&clickparams=eyJBcHBOYW1lIjoiVGVhbXMtRGVza3RvcCIsIkFwcFZlcnNpb24iOiI0OS8yMzExMzAyODcyMCIsIkhhc0ZlZGVyYXRlZFVzZXIiOmZhbHNlfQ%3D%3D
+
+
+######dev：dylynn.dy.lu_x0ss0009@pccw.com.devcss1 https://here2serve--devcssv1.sandbox.lightning.force.com/lightning/setup/SetupNetworks/home
+fta:  dylynn.dy.lu@pccw.com.fta https://here2serve--fta.sandbox.my.salesforce.com
+uat：dylynn.dy.lu_x0ss0009@pccw.com.uatd   https://here2serve--uatd.sandbox.lightning.force.com/lightning/r/Event__c/a6zBU00000008qPYAQ/view
+
+dev1a360v5：dylynn.dy.lu@pccw.com.dev1a360v5 https://here2serve--dev1a360v5.sandbox.lightning.force.com/lightning/setup/ObjectManager/01I2w0000027gZV/Details/view
+
+sfmem: dylynn.dy.lu@pccw.com.sfmem   https://here2serve--sfmem.sandbox.my.salesforce.com/?ec=301&startURL=%2Fvisualforce%2Fsession%3Furl%3Dhttps%253A%252F%252Fhere2serve--sfmem.sandbox.lightning.force.com%252Flightning%252Fsetup%252FSetupNetworks%252Fhome
+
+
+
+
+
+
+

@@ -1,0 +1,410 @@
+
+
+
+54763940（1010）、54764083（club）、54763962（csl）
+
+
+
+
+
+子事件部分配置是母事件控制的，部分配置不是母事件控制的，这个在哪里设定哪些配置跟着母事件走
+
+
+
+SELECT Id,Attendee_Email__c, Name, Lead__c, SMS_Sent__c, form_language__c, CreatedDate,Email_Confirmation_Sent__c,Event__r.send_email_confirmation__c ,Event__r.Send_SMS_Confirmation__c ,Mobile__c FROM Event_Registration__c WHERE SMS_Sent__c =false AND Mobile__c != null and event__c in (select id from event__c)
+
+
+SELECT Id, Name, Name_on_Badge__c, Title_on_Badge__c,Event_Verification_Code__c,Event__c,Event__r.Name,Event__r.Form_Enable_QR_Code__c,Event__r.Venue_Street_Address_1__c,Event__r.Venue_Street_Address_2__c,Event__r.Venue_Name__c,Event__r.Event_Start_Date__c,Event__r.Email_Message__c,Event__r.Email_Subject__c, Event__r.Email_Message_zh__c,Attendee_Email__c,Attendee_Company__c, Contact__c, Lead__c, Email_Confirmation_Sent__c,form_language__c FROM Event_Registration__c WHERE Email_Confirmation_Sent__c =false AND Attendee_Email__c != null and  Attendee_Email__c !='' and event__c in (select id from event__c where send_email_confirmation__c = true)
+
+
+        EM_CE_Config__mdt[] emConf = [SELECT Email_batch_size__c FROM EM_CE_Config__mdt];
+        Database.executeBatch(new Event_SendEmailBatchJob(),integer.valueOf(emConf[0].Email_batch_size__c));
+		
+		
+SELECT Id,Attendee_Email__c, Name, Lead__c, SMS_Sent__c, form_language__c, CreatedDate,Email_Confirmation_Sent__c,Event__r.send_email_confirmation__c,Registration_Number__c  FROM Event_Registration__c WHERE SMS_Sent__c =false AND Mobile__c != null and event__c in (select id from event__c)
+
+
+
+
+
+//停止email
+String SCHEDULED_JOB_NAME = 'Event_SendEmailBatchJob_Recurring';
+List<CronTrigger> cts = [SELECT Id FROM CronTrigger WHERE CronJobDetail.Name =: SCHEDULED_JOB_NAME];
+if (cts.size() > 0) {
+	// Aborts the existing job (which was already completed)
+	system.abortJob(cts[0].Id);
+}
+//启动email
+EM_CE_Config__mdt[] emConf = [SELECT Email_batch_size__c FROM EM_CE_Config__mdt];
+Database.executeBatch(new Event_SendEmailBatchJob(),integer.valueOf(emConf[0].Email_batch_size__c));
+ 
+//停止sms
+String SCHEDULED_JOB_NAME = 'Event_SendSMSBatchJob_Recurring';
+List<CronTrigger> cts = [SELECT Id FROM CronTrigger WHERE CronJobDetail.Name =: SCHEDULED_JOB_NAME];
+if (cts.size() > 0) {
+	// Aborts the existing job (which was already completed)
+	system.abortJob(cts[0].Id);
+}
+//启动sms
+EM_CE_Config__mdt[] emConf = [SELECT SMS_batch_size__c FROM EM_CE_Config__mdt];
+Database.executeBatch(new Event_SendSMSBatchJob(),integer.valueOf(emConf[0].SMS_batch_size__c));
+
+
+
+
+
+
+sfdx force:source:retrieve -m "Report:Events_5/Event_O2O_Registration_Report"
+
+
+
+
+
+SELECT Id,Attendee_Email__c, Name, Lead__c, SMS_Sent__c, form_language__c, CreatedDate,Email_Confirmation_Sent__c,Event__r.send_email_confirmation__c ,Event__r.send_sms_confirmation__c,Mobile__c,redeemed_goods__c FROM Event_Registration__c WHERE  Mobile__c != null and event__c in (select id from event__c where Parent_Event__r.Send_Email_Confirmation__c=true or Send_Email_Confirmation__c=true) 
+
+
+Event_Registration__c e = [SELECT Id,Attendee_Email__c, Name, Lead__c, SMS_Sent__c, form_language__c, CreatedDate,Email_Confirmation_Sent__c,Event__r.send_email_confirmation__c ,Mobile__c,redeemed_goods__c,Event__r.Parent_Event__r.Send_Email_Confirmation__c,Event__r.Parent_Event__r.Email_Message__c FROM Event_Registration__c WHERE  Mobile__c != null and event__c in (select id from event__c where Parent_Event__r.Send_Email_Confirmation__c=true or Send_Email_Confirmation__c=true) ][0];
+system.debug(e);
+ 
+system.debug(e.Event__r.Parent_Event__r.Send_Email_Confirmation__c);
+system.debug(e.Event__r.Parent_Event__r.Email_Message__c );
+
+
+
+
+
+Event_Registration__c e = [SELECT Id, Name, Name_on_Badge__c, Title_on_Badge__c, Event_Verification_Code__c
+	, Event__c, Event__r.Name, Event__r.Form_Enable_QR_Code__c, Event__r.Venue_Street_Address_1__c, Event__r.Venue_Street_Address_2__c
+	, Event__r.Venue_Name__c, Event__r.Event_Start_Date__c, Event__r.Email_Message__c, Event__r.Email_Subject__c, Event__r.Email_Message_zh__c, Event__r.Parent_Event__r.Email_Message__c, Event__r.Parent_Event__r.Email_Subject__c, Event__r.Parent_Event__r.Email_Message_zh__c
+	, Attendee_Email__c, Attendee_Company__c, Contact__c, Lead__c, Email_Confirmation_Sent__c
+	, form_language__c
+FROM Event_Registration__c
+WHERE Email_Confirmation_Sent__c = false
+	AND Attendee_Email__c != NULL
+	AND Attendee_Email__c != ''
+	AND event__c IN (
+		SELECT id
+		FROM event__c
+		WHERE Parent_Event__r.send_email_confirmation__c = true or send_email_confirmation__c = true
+	)][0];
+system.debug(e);
+ 
+system.debug(e.Event__r.Parent_Event__r.Send_Email_Confirmation__c);
+system.debug(e.Event__r.Parent_Event__r.Email_Message__c );
+
+
+
+
+
+
+
+SELECT Id, Name, Name_on_Badge__c, Title_on_Badge__c,Event_Verification_Code__c,Event__c,Event__r.Name,Event__r.Venue__r.Street_Address_1__c,Event__r.Venue__r.Street_Address_1_zh__c,Event__r.Display_Title__c,Event__r.Display_Title_zh__c,Event__r.Form_Enable_QR_Code__c,Event__r.Venue_Street_Address_1__c,Event__r.Venue_Street_Address_2__c,Event__r.Venue_Name__c,Event__r.Event_Start_Date__c,Event__r.SMS_Message__c,Event__r.SMS_Message_zh__c,Event__r.SMS_Subject__c, Mobile__c,Attendee_Company__c, Contact__c, Lead__c, SMS_Sent__c,form_language__c,Registration_Number__c FROM Event_Registration__c WHERE SMS_Sent__c =false AND Mobile__c != null and event__c in (select id from event__c where Send_SMS_Confirmation__c = true)
+
+
+
+
+SELECT Verification_Code__c,Used_Date__c,Used_By__c,OwnerId,Name,LastModifiedById,Is_Used__c,Event__c,CurrencyIsoCode,CreatedById FROM EM_Event_Verification_Code__c
+
+SELECT Id,Attendee_Email__c, Name, Lead__c, SMS_Sent__c, form_language__c, CreatedDate,Email_Confirmation_Sent__c,Event__r.send_email_confirmation__c ,Event__r.Send_SMS_Confirmation__c ,Mobile__c,Event_Verification_Code__c FROM Event_Registration__c WHERE  Mobile__c != null and event__c in (select id from event__c) and Mobile__c ='54763940'
+
+
+
+update Event_Registration__c set CreatedDate='2024-04-07T07:34:18.000+0000' where Mobile__c != null and event__c in (select id from event__c) and Mobile__c ='77777775'
+
+
+
+List<Event_Registration__c> cts = [SELECT Id,Attendee_Email__c, Name, Lead__c, SMS_Sent__c, form_language__c, CreatedDate,Email_Confirmation_Sent__c,Event__r.send_email_confirmation__c ,Event__r.Send_SMS_Confirmation__c ,Mobile__c,Event_Verification_Code__c FROM Event_Registration__c WHERE  Mobile__c != null and event__c in (select id from event__c) and Mobile__c ='77777775'];
+if (cts.size() > 0) {
+    Event_Registration__c  re=cts[0];
+    re.CreatedDate=Datetime.now().addDays(-1);
+    update re;
+}
+
+
+
+1、同一parent event，如果下面的child event 有时间段重合，同一mobile唔可以注册超过配置次数？过了一天还能注册么？？
+
+You can not register this event as you have registered 1 sessions in the same workshop!
+
+
+The current event overlaps with the registered event or the interval is less than 1 hour
+
+
+
+2、不同parent event，如果parent event A 的某个子event跟parent event B的某个子event有时间段重合，同一mobile还可以参加两个event么？
+
+
+
+
+Event Metadata Setting Name	BU_CMM	Namespace Prefix	 
+Maximum Times	1	 	 
+Minimum interval	1	 	 
+Date Limit Type	Not Checked	 	 
+Maximum Times In Period	99,999,999	 	 
+Absence Period	1	 	 
+Absence Period Type	Not Checked	 	 
+Maximum Absence Times	1	 	 
+Maximum Session Number	99,999,999	 	 
+One registration per person	Checked	 	 
+Absence Check	Not Checked	 	 
+Time Overlap Check	Not Checked
+
+
+One registration per person:同一个事件eventid(如果有子event，则为子eventid),一个手机号只能注册一次
+【报错：You have already registered to this event.】
+
+Maximum Session Number:限制该当前选择事件的parent事件底下的所有child事件的该手机号码的已注册的人数
+【报错：You can not register this event as you have registered 1 sessions in the same workshop!】
+
+Maximum Times：限制一个手机号码一天内的注册数量（原来是针对所有事件）（已改为针对同一个parent下的childevent，如果无parent，则针对同一个event）
+【报错：More than 1 registrations in a day!】
+
+Minimum interval（小时）：限制一个手机号码当前选择的注册事件不能跟已有注册事件的时间差小于最小间隔（原来是针对所有事件）（已改为针对同一个parent下的childevent，如果无parent，则针对同一个event）
+Date Limit Type（周[false]/月[true]）：限制一个手机号码当前选择的注册事件不能跟其他已有注册事件的开始结束时间有重叠（原来是针对所有事件）（已改为针对同一个parent下的childevent，如果无parent，则针对同一个event）
+Maximum Times In Period：限制一个手机号码当前选择的注册事件在同一个月内或者同一个周内的其他已有注册事件的注册次数不能超过N次（原来是针对所有事件）（已改为针对同一个parent下的childevent，如果无parent，则针对同一个event）
+【报错:The current event overlaps with the registered event or the interval is less than 1 hour】
+
+
+SelectedEvent.Maximum_Registration__c:（子事件中的配置）限制这个事件下的最大注册人数
+【报错：There are only 0 positions left! You and your friends exceed the remaining positions!】
+
+Maximum Absence Times：限制同一个手机号码的出勤次数（原来是针对所有事件）（已改为针对同一个parent下的childevent，如果无parent，则针对同一个event）
+【报错：The number of absences has exceede 1】
+
+
+判断顺序：
+One registration per person-----》Maximum Session Number-------》SelectedEvent.Maximum_Registration__c-------》Maximum Times、Maximum Times In Period、Maximum Absence Times
+Maximum_Times-----》Maximum Times In Period-------》Maximum_Absence_Times__c
+
+
+
+
+One_registration_per_person__c:同一个eventid(如果有子event，则为子eventid),一个人只能注册一次
+
+Maximum_Session_Number__c：如果这个eventid有母event，且Maximum_Session_Number__c>0(0写死)，
+则会循环查出该event的母事件底下的所有子事件的该手机号码的已注册的人数（SELECT Name FROM Event_Registration__c WHERE ((Lead__c != NULL AND Lead__c != '' AND Lead__c = '{!LeadRecord.Id}') OR (Contact__c != NULL AND Contact__c != '' AND Contact__c = '{!ContactRecord.Id}')) AND Event__r.Parent_Event__c != NULL AND Event__r.Parent_Event__c = '{!SelectedEvent.Parent_Event__c}'），
+如果registered_session_number>=Maximum_Session_Number__c
+则会报错You can not register this event as you have registered {!registered_session_number} sessions in the same workshop!
+
+
+如果这个eventid没有母event或者Maximum_Session_Number__c<=0(0写死),或者上面的报错没显示，则进行以下逻辑：
+则会查出注册表该event的所有（用eventid查）所有已注册人数+每个人的带客人数
+然后判断是否大于等于该event的detail配置中的 Maximum_Registration__c，如果是，则按照以下判断输出文案：
+
+如果 {!RegistrationCount} 大于或等于 {!Get_Event_Setting.Maximum_Times__c}，那么
+   如果 {!message_exceedmax_reg} 不为空，则输出 {!message_exceedmax_reg}，否则输出 '一天内注册次数超过' &TEXT({!Get_Event_Setting.Maximum_Times__c})& '次!',
+否则，如果 {!CurrentEvetLimitedNum} 大于 0，那么
+   如果 {!message_overlaps_reg} 不为空，则输出 {!message_overlaps_reg}，否则输出 '当前事件与已注册事件重叠，或时间间隔小于'& TEXT({!Get_Event_Setting.Minimum_interval__c})&'小时',
+否则，如果 {!RegistrationCountByPeriod} 大于等于 {!Get_Event_Setting.Maximum_Times_In_Period__c}，那么
+   如果 {!message_period_reg} 不为空，则输出 {!message_period_reg}，否则输出 '一' & IF({!Get_Event_Setting.Date_Limit_Type__c},'个月','周')& '内注册次数已超过' & TEXT({!Get_Event_Setting.Maximum_Times_In_Period__c}) & '次',
+否则，如果 {!AbsenceNum} 大于 {!Get_Event_Setting.Maximum_Absence_Times__c}，那么
+   如果 {!message_absence_reg} 不为空，则输出 {!message_absence_reg}，否则输出 '缺席次数已超过' &TEXT({!Get_Event_Setting.Maximum_Absence_Times__c})&'次!',
+否则，如果 {!sum_registration_number_and_bring_friends_number} 大于或等于 {!SelectedEvent.Maximum_Registration__c}，那么
+   如果 {!message_full_reg} 不为空，则输出 {!message_full_reg}，否则输出 '剩余名额仅剩' &TEXT({!SelectedEvent.Maximum_Registration__c}-{!Sum_all_register})&'个! 您和您的朋友超出了剩余名额!',
+否则，输出空字符串
+
+
+
+如果不是，则会查出注册表该leadid或 contact id  （之前会search lead/contact by 手机号）在所有event的已注册次数，并计算
+
+RegistrationCount：限制一个手机号码一天内的注册数量（针对所有事件）
+如果 (
+并且(
+   YEAR(DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.CreatedDate})) = YEAR(DATEVALUE({!$Flow.CurrentDateTime})),
+   MONTH(DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.CreatedDate})) = MONTH(DATEVALUE({!$Flow.CurrentDateTime})),
+   DAY(DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.CreatedDate})) = DAY(DATEVALUE({!$Flow.CurrentDateTime})),
+   {!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_End_Date__c} > {!$Flow.CurrentDateTime}
+),
+   {!RegistrationCount}+1,
+   {!RegistrationCount}
+)
+如果正在处理的事件注册的创建日期是当前日期，并且该事件的结束日期大于当前日期，则将注册计数加1；否则保持原先的注册计数不变,用于与Maximum Times的比较
+
+RegistrationCountByPeriod：限制一个手机号码一周/一个月的注册数量（针对所有事件）
+如果 (
+并且(
+   {!IsRegisterationInOneMonth} 并且 {!Get_Event_Setting.Date_Limit_Type__c} = true
+) 
+或者
+并且(
+   {!IsRegisteredInOneWeek} 并且 {!Get_Event_Setting.Date_Limit_Type__c} = false
+),
+   {!RegistrationCountByPeriod}+1,
+   {!RegistrationCountByPeriod}
+)
+如果事件的注册在一个月内且日期限制类型为真，或者注册在一周内且日期限制类型为假，则将注册计数按照条件加1；否则保持原先的注册计数不变
+
+
+CurrentEvetLimitedNum：限制一个手机号码现在的判断被选事件（SelectedEvent）的日期范围是否与循环事件注册中的事件日期范围有重叠或包含关系或者跟其他已有事件的时间差小于最小间隔
+如果 (
+   ({!Diff_RegistedEndDate_SelectedEventStartDate_Hour} < {!Get_Event_Setting.Minimum_interval__c})
+   ||
+   ({!Diff_RegistedStartDate_SelectedEventEndDate_Hour} < {!Get_Event_Setting.Minimum_interval__c})
+   ||
+   {!IsSelectedEventDateBetweenRegistedDate}
+),
+   {!CurrentEvetLimitedNum}+1,
+   {!CurrentEvetLimitedNum}
+)
+如果满足以下任一条件：注册结束日期与选定事件开始日期之间的时间差小于最小间隔、注册开始日期与选定事件结束日期之间的时间差小于最小间隔，或者选定事件的日期位于注册日期之间，则将当前事件的限制数量加1；否则保持原先的当前事件限制数量不变
+
+
+
+AbsenceNum：
+如果 (
+   DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_End_Date__c}) < {!$Flow.CurrentDate}
+   &&
+   DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_End_Date__c}) >= {!$Flow.CurrentDate} - (IF({!Get_Event_Setting.Absence_Period_Type__c}, 7*{!Get_Event_Setting.Absence_Period__c}, {!Get_Event_Setting.Absence_Period__c}))
+   &&
+   !{!Loop_Event_Resgistration_By_Contact_Lead.Attendance__c}
+),
+   {!AbsenceNum}+1,
+   {!AbsenceNum}
+)
+
+如果满足以下条件：事件的结束日期早于当前日期，并且事件的结束日期晚于当前日期减去缺席期间（根据设置的缺席期间类型选择是以天还是以周为单位计算），并且注册记录的出席状态为否，则将缺席数量加1；否则保持原先的缺席数量不变
+
+
+
+判断满足一下其中一个条件：
+1、CurrentEvetLimitedNum>0 (0写死)
+2、RegistrationCount 大于等于{!Get_Event_Setting.Maximum_Times__c} 且{!Get_Event_Setting.Maximum_Times__c} >0 (0写死)
+3、RegistrationCountByPeriod 大于等于{!Get_Event_Setting.Maximum_Times_In_Period__c} 且{!Get_Event_Setting.Maximum_Times_In_Period__c} >0 (0写死)
+4、AbsenceNum 大于等于{!Get_Event_Setting.Maximum_Absence_Times__c}  且{!Get_Event_Setting.Maximum_Absence_Times__c} >0 (0写死) 且 {!Get_Event_Setting.Absence_Check__c}为true
+
+
+
+如果是，则按照以下判断输出文案：
+
+如果 {!RegistrationCount} 大于或等于 {!Get_Event_Setting.Maximum_Times__c}，那么
+   如果 {!message_exceedmax_reg} 不为空，则输出 {!message_exceedmax_reg}，否则输出 '一天内注册次数超过' &TEXT({!Get_Event_Setting.Maximum_Times__c})& '次!',
+否则，如果 {!CurrentEvetLimitedNum} 大于 0，那么
+   如果 {!message_overlaps_reg} 不为空，则输出 {!message_overlaps_reg}，否则输出 '当前事件与已注册事件重叠，或时间间隔小于'& TEXT({!Get_Event_Setting.Minimum_interval__c})&'小时',
+否则，如果 {!RegistrationCountByPeriod} 大于等于 {!Get_Event_Setting.Maximum_Times_In_Period__c}，那么
+   如果 {!message_period_reg} 不为空，则输出 {!message_period_reg}，否则输出 '一' & IF({!Get_Event_Setting.Date_Limit_Type__c},'个月','周')& '内注册次数已超过' & TEXT({!Get_Event_Setting.Maximum_Times_In_Period__c}) & '次',
+否则，如果 {!AbsenceNum} 大于 {!Get_Event_Setting.Maximum_Absence_Times__c}，那么
+   如果 {!message_absence_reg} 不为空，则输出 {!message_absence_reg}，否则输出 '缺席次数已超过' &TEXT({!Get_Event_Setting.Maximum_Absence_Times__c})&'次!',
+否则，如果 {!sum_registration_number_and_bring_friends_number} 大于或等于 {!SelectedEvent.Maximum_Registration__c}，那么
+   如果 {!message_full_reg} 不为空，则输出 {!message_full_reg}，否则输出 '剩余名额仅剩' &TEXT({!SelectedEvent.Maximum_Registration__c}-{!Sum_all_register})&'个! 您和您的朋友超出了剩余名额!',
+否则，输出空字符串
+
+
+
+
+IsRegisterationInOneMonth：
+AND(
+		YEAR(DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_End_Date__c}))*12 + MONTH(DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_End_Date__c}))
+		>= YEAR(DATEVALUE({!SelectedEvent.Event_Start_Date__c}))*12 +MONTH(DATEVALUE({!SelectedEvent.Event_Start_Date__c}))
+		,
+		YEAR(DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_Start_Date__c}))*12 + MONTH(DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_Start_Date__c}))
+		<= YEAR(DATEVALUE({!SelectedEvent.Event_Start_Date__c}))*12 +MONTH(DATEVALUE({!SelectedEvent.Event_Start_Date__c}))
+	)
+	||
+	AND(
+		YEAR(DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_End_Date__c}))*12 + MONTH(DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_End_Date__c}))
+		>= YEAR(DATEVALUE({!SelectedEvent.Event_End_Date__c}))*12 +MONTH(DATEVALUE({!SelectedEvent.Event_End_Date__c}))
+		,
+		YEAR(DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_Start_Date__c}))*12 + MONTH(DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_Start_Date__c}))
+		<= YEAR(DATEVALUE({!SelectedEvent.Event_End_Date__c}))*12 +MONTH(DATEVALUE({!SelectedEvent.Event_End_Date__c}))
+	) 
+	
+第一个AND函数中的条件是：
+
+事件1的结束日期（{!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_End_Date__c}）所在年份乘以12再加上月份，大于等于事件2的开始日期（{!SelectedEvent.Event_Start_Date__c}）所在年份乘以12再加上月份。
+事件1的开始日期（{!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_Start_Date__c}）所在年份乘以12再加上月份，小于等于事件2的开始日期（{!SelectedEvent.Event_Start_Date__c}）所在年份乘以12再加上月份。
+第二个AND函数中的条件是：
+
+事件1的结束日期（{!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_End_Date__c}）所在年份乘以12再加上月份，大于等于事件2的结束日期（{!SelectedEvent.Event_End_Date__c}）所在年份乘以12再加上月份。
+事件1的开始日期（{!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_Start_Date__c}）所在年份乘以12再加上月份，小于等于事件2的结束日期（{!SelectedEvent.Event_End_Date__c}）所在年份乘以12再加上月份。
+如果以上任意一个AND函数返回true，也就是满足了时间重叠的条件，那么整个表达式就会返回true，表示存在时间上的重叠
+
+
+
+
+IsRegisteredInOneWeek：
+OR(
+	AND(
+		YEAR(DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_End_Date__c})) > YEAR(DATEVALUE({!SelectedEvent.Event_Start_Date__c}))
+		||
+		AND(
+			YEAR(DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_End_Date__c})) = YEAR(DATEVALUE({!SelectedEvent.Event_Start_Date__c})) ,
+			CEILING( ( DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_End_Date__c})- DATE( 1900, 1, 1) + 1) / 7)
+			>=
+			CEILING( ( DATEVALUE({!SelectedEvent.Event_Start_Date__c})- DATE( 1900, 1, 1) + 1) / 7)
+		)
+		,
+		YEAR(DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_Start_Date__c})) < YEAR(DATEVALUE({!SelectedEvent.Event_Start_Date__c}))
+		||
+		AND(
+			YEAR(DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_Start_Date__c})) = YEAR(DATEVALUE({!SelectedEvent.Event_Start_Date__c})) ,
+			CEILING( ( DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_Start_Date__c})- DATE( 1900, 1, 1) + 1) / 7)
+			<=
+			CEILING( ( DATEVALUE({!SelectedEvent.Event_Start_Date__c})- DATE( 1900, 1, 1) + 1) / 7)
+		)
+	),
+	AND(
+		YEAR(DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_End_Date__c})) > YEAR(DATEVALUE({!SelectedEvent.Event_End_Date__c}))
+		||
+		AND(
+			YEAR(DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_End_Date__c})) = YEAR(DATEVALUE({!SelectedEvent.Event_End_Date__c})) ,
+			CEILING( ( DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_End_Date__c})- DATE( 1900, 1, 1) + 1) / 7)
+			>=
+			CEILING( ( DATEVALUE({!SelectedEvent.Event_End_Date__c})- DATE( 1900, 1, 1) + 1) / 7)
+		)
+		,
+		YEAR(DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_Start_Date__c})) < YEAR(DATEVALUE({!SelectedEvent.Event_End_Date__c}))
+		||
+		AND(
+			YEAR(DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_Start_Date__c})) = YEAR(DATEVALUE({!SelectedEvent.Event_End_Date__c})) ,
+			CEILING( ( DATEVALUE({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_Start_Date__c})- DATE( 1900, 1, 1) + 1) / 7)
+			<=
+			CEILING( ( DATEVALUE({!SelectedEvent.Event_End_Date__c})- DATE( 1900, 1, 1) + 1) / 7)
+		)
+	)
+)
+
+主要是用来比较两个事件的开始日期和结束日期是否有重叠。首先会比较循环中的事件的结束日期是否在选择的事件的开始日期之后，如果是则说明两个事件没有重叠。接着会比较循环中的事件的开始日期是否在选择的事件的结束日期之前，如果是也说明两个事件没有重叠。如果以上两个条件都不满足，则说明两个事件有重叠。该代码中使用了年份比较和每年的第几周比较来确定两个事件是否有重叠
+
+
+Diff_RegistedEndDate_SelectedEventStartDate_Hour：
+ABS( FLOOR( {!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_End_Date__c} -  {!SelectedEvent.Event_Start_Date__c} )*24
++FLOOR( MOD( ({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_End_Date__c} - {!SelectedEvent.Event_Start_Date__c}  ) * 24, 24 ) ) )
+
+计算两个日期时间差的表达式，主要目的是计算循环中的事件的结束时间和选择的事件的开始时间之间的小时差。首先会计算两个日期时间之间的小时差，然后将小时差取绝对值得到正数值
+
+
+
+
+Diff_RegistedStartDate_SelectedEventEndDate_Hour：
+ABS( FLOOR( {!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_Start_Date__c} -  {!SelectedEvent.Event_End_Date__c} )*24
++FLOOR( MOD( ({!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_Start_Date__c} - {!SelectedEvent.Event_End_Date__c}  ) * 24, 24 ) ) )
+
+计算两个日期时间差的表达式，主要目的是计算循环中的事件的开始时间和选择的事件的结束时间之间的小时差。首先会计算两个日期时间之间的小时差，然后将小时差取绝对值得到正数值
+
+
+
+
+IsSelectedEventDateBetweenRegistedDate：
+IF(
+    (
+        {!SelectedEvent.Event_Start_Date__c} >= {!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_Start_Date__c} &&
+        {!SelectedEvent.Event_Start_Date__c} <= {!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_End_Date__c}
+    ) ||
+    (
+        {!SelectedEvent.Event_End_Date__c} >= {!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_Start_Date__c} &&
+        {!SelectedEvent.Event_End_Date__c} <= {!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_End_Date__c}
+    ) ||
+    (
+        {!SelectedEvent.Event_Start_Date__c} <= {!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_Start_Date__c} &&
+        {!SelectedEvent.Event_End_Date__c} >= {!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_End_Date__c}
+    ) ||
+    (
+        {!SelectedEvent.Event_Start_Date__c} >= {!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_Start_Date__c} &&
+        {!SelectedEvent.Event_End_Date__c} <= {!Loop_Event_Resgistration_By_Contact_Lead.Event__r.Event_End_Date__c}
+    )
+, true, false)
+
+用于检查两个事件时间段是否有重叠。
+首先，检查选择的事件的开始时间是否大于等于循环中的事件的开始时间，并且选择的事件的开始时间是否小于等于循环中的事件的结束时间。如果是，则表示选择的事件的开始时间在循环中的事件时间段内。
+或者，检查选择的事件的结束时间是否大于等于循环中的事件的开始时间，并且选择的事件的结束时间是否小于等于循环中的事件的结束时间。如果是，则表示选择的事件的结束时间在循环中的事件时间段内。
+判断被选事件（SelectedEvent）的日期范围是否与循环事件注册中的事件日期范围有重叠或包含关系。如果有重叠或包含关系，则返回 true；否则返回 false

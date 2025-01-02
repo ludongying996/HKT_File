@@ -1,0 +1,60 @@
+
+C:\Users\fsadmin\AppData\Roaming\npm\node_modules\sfcc-ci
+
+app_hkt_core, plugin_wishlists, app_storefront_base, jsPDF, lib_productlist, modules, plugin_gtm, bm_tools, int_cim_authorization, bm_app_storefront_base, int_cslshopapi, bc_job_components, int_devtools, int_onepayment, bm_cs, int_club_system_integration
+app_hkt_core:plugin_wishlists:app_storefront_base:jsPDF:lib_productlist:modules:plugin_gtm:bm_tools:int_cim_authorization:bm_app_storefront_base:int_cslshopapi:bc_job_components:int_devtools:int_onepayment:bm_cs:int_club_system_integration
+
+
+
+sgmf-scripts --uploadCartridge app_storefront_base && sgmf-scripts --uploadCartridge modules && sgmf-scripts --uploadCartridge bm_app_storefront_base
+
+
+
+sgmf-scripts --uploadCartridge app_hkt_core && sgmf-scripts --uploadCartridge plugin_wishlists && sgmf-scripts --uploadCartridge app_storefront_base && sgmf-scripts --uploadCartridge jsPDF && sgmf-scripts --uploadCartridge lib_productlist && sgmf-scripts --uploadCartridge modules && sgmf-scripts --uploadCartridge plugin_gtm && sgmf-scripts --uploadCartridge bm_tools && sgmf-scripts --uploadCartridge int_cim_authorization && sgmf-scripts --uploadCartridge bm_app_storefront_base && sgmf-scripts --uploadCartridge int_cslshopapi && sgmf-scripts --uploadCartridge bc_job_components && sgmf-scripts --uploadCartridge int_devtools && sgmf-scripts --uploadCartridge int_onepayment && sgmf-scripts --uploadCartridge bm_cs && sgmf-scripts --uploadCartridge int_club_system_integration 
+
+
+ sgmf-scripts --uploadCartridge app_hkt_core 
+ sgmf-scripts --uploadCartridge plugin_wishlists 
+ sgmf-scripts --uploadCartridge app_storefront_base 
+ sgmf-scripts --uploadCartridge jsPDF 
+ sgmf-scripts --uploadCartridge lib_productlist 
+ sgmf-scripts --uploadCartridge modules 
+ sgmf-scripts --uploadCartridge plugin_gtm 
+ sgmf-scripts --uploadCartridge bm_tools 
+ sgmf-scripts --uploadCartridge int_cim_authorization 
+ sgmf-scripts --uploadCartridge bm_app_storefront_base 
+ sgmf-scripts --uploadCartridge int_cslshopapi 
+ sgmf-scripts --uploadCartridge bc_job_components 
+ sgmf-scripts --uploadCartridge int_devtools 
+ sgmf-scripts --uploadCartridge int_onepayment 
+ sgmf-scripts --uploadCartridge bm_cs 
+ sgmf-scripts --uploadCartridge int_club_system_integration 
+ 
+ 
+ 
+   instance :
+    alias : NDC_TEST
+    host : bjqd-009.dx.commercecloud.salesforce.com
+    default : false
+  sandbox :
+    id : e3eb3a15-a6ba-4c14-a3e2-63956e21b3e9
+    realm : bjqd
+    instance : 009
+    versions :
+      app : 23.9.1.19
+      web : 23.4.0.0
+    resourceProfile : medium
+    state : started
+    createdAt : 2023-09-06T09:59:05Z
+    createdBy : e14844d7-409a-47c4-be70-1b022800029d
+    eol : 2023-12-02T21:59:05Z
+    hostName : bjqd-009.dx.commercecloud.salesforce.com
+    links :
+      bm : https://bjqd-009.dx.commercecloud.salesforce.com/on/demandware.store/Sites-Site
+      ocapi : https://bjqd-009.dx.commercecloud.salesforce.com/s/-/dw/data/
+      impex : https://bjqd-009.dx.commercecloud.salesforce.com/on/demandware.servlet/webdav/Sites/Impex
+      code : https://bjqd-009.dx.commercecloud.salesforce.com/on/demandware.servlet/webdav/Sites/Cartridges
+      logs : https://bjqd-009.dx.commercecloud.salesforce.com/on/demandware.servlet/webdav/Sites/Logs
+ 
+
+以上係sandbox既資料

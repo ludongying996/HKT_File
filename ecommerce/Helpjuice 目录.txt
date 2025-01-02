@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html class="no-js" lang="">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8">
+    <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+    <title>{% if question %}{{account.name}} &mdash; {{ question.name }}{% else %}{{account.name}} Support{% endif %}</title>
+    
+    
+    {% if on_show_question_page %}
+        <meta name="description" content="{{ question.long_answer_sample | slice: 0, 155 }}" />
+        <meta property="og:description" content="{{ question.long_answer_sample | slice: 0, 155 }}" />
+    {% elsif on_contact_us_page %}
+        <meta name="description" content="Get in touch with {{ account.name }}." />
+        <meta property="og:description" content="Get in touch with {{ account.name }}." />
+    {% elsif on_index_page %}
+        <meta name="description" content="{{ account.name }} Support Center helps you to find FAQ, how-to guides and step-by-step tutorials." />
+        <meta property="og:description" content="{{ account.name }} Support Center helps you to find FAQ, how-to guides and step-by-step tutorials." />
+    {% elsif category == null %}
+        <meta name="description" content="{{ account.name }} Support Center helps you to find FAQ, how-to guides and step-by-step tutorials." />
+        <meta property="og:description" content="{{ account.name }} Support Center helps you to find FAQ, how-to guides and step-by-step tutorials." />
+    {% else %}
+        <meta name="description" content="{{ account.name }} Support Center helps you to find FAQ, how-to guides and step-by-step tutorials." />
+        <meta property="og:description" content="{{ account.name }} Support Center helps you to find FAQ, how-to guides and step-by-step tutorials."/>
+    {% endif %}
+    
+    
+    <!-- your favicon -->
+    <link rel="shortcut icon" type="image/*" href="https://icon.horse/icon/{{account.email_from_domain}}" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css" rel="stylesheet">
+    <link href="https://s3.amazonaws.com/assets.helpjuice.com/fontawesome/css/all.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+    <link rel="stylesheet" href="/knowledgebase.css">
+    <script src="/knowledgebase.js" defer></script>
+    <link href="/assets/main.css" rel="stylesheet">
+    
+    <script>var enabledAISearch = true;</script>
+    
+  </head>
+  
+  <body class="classic-theme {% if on_show_question_page %}question_page{% elsif on_contact_us_page %}contact_us{% elsif on_index_page %}index_page{% elsif category == null %}landing_page{% else %}category_page{% endif %} fontfix">
+  
+ 
+    <div class="row container">
+        <div class="col-xs-12 col-sm-3 col-md-4 main-sidebar">
+            <a href="/" class="logo">
+              {{ account.name }}
+            </a>
+            
+            <label for="show_menu" class="show_menu_label">Show Menu</label>
+            <input type="checkbox" name="show_menu" id="show_menu" />
+            
+            <ul class="main-navigation">
+                <li><a class="home" href="/">Return to Home</a></li>
+                <li><a class="contact" href="/contact-us">Contact Support</a></li>
+            </ul>
+            
+            <!--<ul id="navigation" class="main-navigation categories-menu">-->
+            <!--</ul>    -->
+            
+            <ul class="main-navigation categories-menu">
+                 {% for category in roots_categories %}
+                    <li><a href="{{ category.to_language_url }}">{{ category.name }}</a></li>
+                    
+                    <ul class="subcategories">
+                        {% for question in category.published_questions %}
+                       
+                            <li><a href="{{question.to_language_url}}" >{{ question.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    
+                    {% if category.ordered_subcategories.size > 0 %}
+                    
+                        <ul class="subcategories">
+                            {% for subcategory in category.ordered_subcategories %}
+                                <li><a href="{{ subcategory.to_language_url }}">{{ subcategory.name }}</a></li>
+                                
+                                <ul class="subcategories">
+                                    {% for question in subcategory.published_questions %}
+                                   
+                                        <li><a href="{{question.to_language_url}}" >{{ question.name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                                
+                                {% if subcategory.ordered_subcategories.size > 0 %}
+                                
+                    
+                                    <ul class="subcategories">
+                                        {% for subcategory in subcategory.ordered_subcategories %}
+                                            <li><a href="{{ subcategory.to_language_url }}">{{ subcategory.name }}</a></li>
+                                        
+                                        
+                                            <ul class="subcategories">
+                                                {% for question in subcategory.published_questions %}
+                                               
+                                                    <li><a href="{{question.to_language_url}}" >{{ question.name }}</a></li>
+                                                {% endfor %}
+                                            </ul>
+                                        
+                                        
+                                            {% if subcategory.ordered_subcategories.size > 0 %}
+                                    
+                        
+                                                <ul class="subcategories">
+                                                    {% for subcategory in subcategory.ordered_subcategories %}
+                                                        <li><a href="{{ subcategory.to_language_url }}">{{ subcategory.name }}</a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            
+                                            {% endif %}
+                                        
+                                        {% endfor %}
+                                    </ul>
+                                
+                                {% endif %}
+                    
+                            {% endfor %}
+                        </ul>
+                    
+                    {% endif %}
+                 {% endfor %}
+            </ul>
+            
+            <div class="contact-us">
+                <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+                <svg width="74px" height="37px" viewBox="0 0 74 37" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                        <g id="theme4-home_@2x" sketch:type="MSArtboardGroup" transform="translate(-260.000000, -684.000000)">
+                            <g id="email-icon" sketch:type="MSLayerGroup" transform="translate(260.000000, 684.000000)">
+                                <g id="Group" sketch:type="MSShapeGroup">
+                                    <path d="M47.9942857,35.6329317 L29.5093878,35.6329317 C26.1567347,35.6329317 23.4232653,32.9433735 23.4232653,29.6445783 L23.4232653,7.44457831 C23.4232653,4.14578313 26.1567347,1.4562249 29.5093878,1.4562249 L66.4791837,1.4562249 C69.8318367,1.4562249 72.5653061,4.14578313 72.5653061,7.44457831 L72.5653061,29.6445783 C72.5653061,32.9433735 69.8318367,35.6329317 66.4791837,35.6329317 L45.5326531,35.6329317" id="XMLID_1220_" fill="#FFFFFF"></path>
+                                    <path d="M29.5093878,36.9702811 L66.4791837,36.9702811 C70.5869388,36.9702811 73.9244898,33.6863454 73.9244898,29.6297189 L73.9244898,7.44457831 C73.9244898,3.40281124 70.5869388,0.104016064 66.4791837,0.104016064 L29.5093878,0.104016064 C25.4016327,0.104016064 22.0640816,3.38795181 22.0640816,7.44457831 L22.0640816,29.6445783 C22.0489796,33.6863454 25.4016327,36.9702811 29.5093878,36.9702811 L29.5093878,36.9702811 Z M24.797551,7.44457831 C24.797551,4.88875502 26.9118367,2.80843373 29.5093878,2.80843373 L66.4791837,2.80843373 C69.0767347,2.80843373 71.1910204,4.88875502 71.1910204,7.44457831 L71.1910204,29.6445783 C71.1910204,32.2004016 69.0767347,34.2807229 66.4791837,34.2807229 L45.5326531,34.2807229 L29.5093878,34.2807229 C26.9118367,34.2807229 24.797551,32.2004016 24.797551,29.6445783 L24.797551,7.44457831 L24.797551,7.44457831 L24.797551,7.44457831 Z" id="Shape" fill="#61646C"></path>
+                                    <path d="M29.5546939,29.6891566 C29.8265306,29.9863454 30.2040816,30.1497992 30.5816327,30.1497992 C30.8987755,30.1497992 31.2310204,30.0457831 31.4877551,29.8080321 L43.3126531,19.5550201 L47.1485714,22.4823293 C47.3902041,22.675502 47.6922449,22.7646586 47.9942857,22.7646586 C48.2963265,22.7646586 48.5832653,22.675502 48.84,22.4823293 L52.7967347,19.4658635 L64.5008163,29.7931727 C64.757551,30.0309237 65.0897959,30.1349398 65.4069388,30.1349398 C65.7844898,30.1349398 66.1620408,29.9863454 66.4338776,29.6891566 C66.9322449,29.1393574 66.8869388,28.27751 66.3281633,27.7871486 L55.0016327,17.786747 L66.2677551,9.18313253 C66.8718367,8.72248996 66.977551,7.87550201 66.5093878,7.29598394 C66.0412245,6.70160643 65.1804082,6.59759036 64.5914286,7.05823293 L47.9942857,19.7333333 L44.0979592,16.7465863 L31.4273469,7.07309237 C30.8232653,6.6124498 29.977551,6.71646586 29.5093878,7.31084337 C29.0412245,7.90522088 29.1469388,8.7373494 29.7510204,9.19799197 L41.1228571,17.8907631 L29.6906122,27.802008 C29.1016327,28.2923695 29.0563265,29.1393574 29.5546939,29.6891566 L29.5546939,29.6891566 Z" id="Shape" fill="#61646C"></path>
+                                    <path d="M17.76,19.8967871 C18.515102,19.8967871 19.1342857,19.2875502 19.1342857,18.5445783 C19.1342857,17.8016064 18.515102,17.1923695 17.76,17.1923695 L6.88653061,17.1923695 C6.13142857,17.1923695 5.5122449,17.8016064 5.5122449,18.5445783 C5.5122449,19.2875502 6.13142857,19.8967871 6.88653061,19.8967871 L17.76,19.8967871 L17.76,19.8967871 Z" id="Shape" class="contact-icon-fill"></path>
+                                    <path d="M1.37428571,12.7791165 L17.76,12.7791165 C18.515102,12.7791165 19.1342857,12.1698795 19.1342857,11.4269076 C19.1342857,10.6839357 18.515102,10.0746988 17.76,10.0746988 L1.37428571,10.0746988 C0.619183673,10.0746988 0,10.6839357 0,11.4269076 C0.0151020408,12.1698795 0.619183673,12.7791165 1.37428571,12.7791165 L1.37428571,12.7791165 Z" id="Shape" class="contact-icon-fill"></path>
+                                    <path d="M19.1342857,25.662249 C19.1342857,24.9192771 18.515102,24.3100402 17.76,24.3100402 L10.6016327,24.3100402 C9.84653061,24.3100402 9.22734694,24.9192771 9.22734694,25.662249 C9.22734694,26.4052209 9.84653061,27.0144578 10.6016327,27.0144578 L17.76,27.0144578 C18.515102,27.0144578 19.1342857,26.4052209 19.1342857,25.662249 L19.1342857,25.662249 Z" id="Shape" class="contact-icon-fill"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+                
+                <h3>Can't find what <span>you're looking for?</span></h3>
+                <p>Our award-winning customer care team is here for you.</p>
+                <a href="/contact-us" class="see-all">Contact Support</a>
+                
+                
+            </div>
+            
+             <ul id="test" class="main-navigation categories-menu"> 
+                    
+              </ul>
+        </div>
+        
+        
+        <div class="col-xs-12 col-sm-9 col-md-8 main-content">
+
+            <div class="search_block header_nav_section">
+                <form autocomplete="off">
+                    <div class="search_icon"></div>
+                    <input id="search" name="search" size="30" type="text" autocomplete="off" placeholder="How can we help you?" />
+                     <select id="category-select">      
+                            <option value="0">All Categories</option>         
+                            {% for categories in roots_categories %}              
+                                <option value="{{ categories.id }}">{{ categories.name }}</option>         
+                            {% endfor %} 
+                        </select>
+                        
+                </form>
+            </div>
+            
+            <article id="page_content">
+                {{ content_for_layout }}
+            </article>
+            
+            
+            <article id="search_results">
+              <div class="page_title">
+                <div class="">
+                  <h1></h1>
+                </div>
+              </div>
+        
+              <div id="results"> 
+                    <ul class="list search-results">
+                      <!-- load search results here -->
+                    </ul>
+              </div>
+              
+              <div class="hidden" id="no-results">
+                  <div class="no-results-wrap js_equalise_is_landing">
+                    <!-- if no results found => show contact form -->
+                  
+                          <div class="contact_form">
+                          
+                            <p>Please fill out the contact form below and we will reply as soon as possible.</p>
+                          
+                            <div class="form-container">
+                              <div class="form style-2">
+                                <form accept-charset='UTF-8' action='/questions' class='active' id='new_question' method='post'>
+                                
+                                  <!-- Don't modify or delete this -->
+                                  <div class="form-group">
+                                    {{csrf_token}}
+                                    <input type='hidden' value='{{account.id}}' name='question[account_id]' id='question_account_id'>
+                                  </div>
+                                
+                                  <div class="form-group">
+                                    <input type="text" name='question[email]' placeholder="Your Email" id='question_email' required>
+                                    <label for="question_email">Your email</label>
+                                  </div>
+                                
+                                  <div class="form-group">
+                                    <input type="text" placeholder="Your question" name='question[name]' id='question_name' required>
+                                    <label for="question_name">Your question</label>
+                                  </div>
+                                
+                                  <div class="form-group" id="expand">
+                                    <textarea type="message" name='question[description]' id='question_description' placeholder="Description (details)" required></textarea>
+                                    <label for="question_description">Description (details)</label>
+                                  </div>
+                                  
+                                  {{ captcha_verification }}
+                                  
+                                  <input class="btn" type="submit" id='question_submit' name='commit' value="Contact Support">
+                                
+                                  <!-- Want to add custom fields to your form (such as: account_id) and have them included when the user contacts support? Max three custom fields -->
+                                  <!-- <input type="text" name='question[custom_field][favorite_car]' id='question[custom_field][favorite_car]' value='Whats your favorite car?'> -->
+                                  
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        
+                  </div>
+              </div>
+            </article>
+            
+            
+            <footer class="footer">
+            
+                <div class="contact-us">
+                    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+                    <svg width="74px" height="37px" viewBox="0 0 74 37" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+                        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                            <g id="theme4-home_@2x" sketch:type="MSArtboardGroup" transform="translate(-260.000000, -684.000000)">
+                                <g id="email-icon" sketch:type="MSLayerGroup" transform="translate(260.000000, 684.000000)">
+                                    <g id="Group" sketch:type="MSShapeGroup">
+                                        <path d="M47.9942857,35.6329317 L29.5093878,35.6329317 C26.1567347,35.6329317 23.4232653,32.9433735 23.4232653,29.6445783 L23.4232653,7.44457831 C23.4232653,4.14578313 26.1567347,1.4562249 29.5093878,1.4562249 L66.4791837,1.4562249 C69.8318367,1.4562249 72.5653061,4.14578313 72.5653061,7.44457831 L72.5653061,29.6445783 C72.5653061,32.9433735 69.8318367,35.6329317 66.4791837,35.6329317 L45.5326531,35.6329317" id="XMLID_1220_" fill="#FFFFFF"></path>
+                                        <path d="M29.5093878,36.9702811 L66.4791837,36.9702811 C70.5869388,36.9702811 73.9244898,33.6863454 73.9244898,29.6297189 L73.9244898,7.44457831 C73.9244898,3.40281124 70.5869388,0.104016064 66.4791837,0.104016064 L29.5093878,0.104016064 C25.4016327,0.104016064 22.0640816,3.38795181 22.0640816,7.44457831 L22.0640816,29.6445783 C22.0489796,33.6863454 25.4016327,36.9702811 29.5093878,36.9702811 L29.5093878,36.9702811 Z M24.797551,7.44457831 C24.797551,4.88875502 26.9118367,2.80843373 29.5093878,2.80843373 L66.4791837,2.80843373 C69.0767347,2.80843373 71.1910204,4.88875502 71.1910204,7.44457831 L71.1910204,29.6445783 C71.1910204,32.2004016 69.0767347,34.2807229 66.4791837,34.2807229 L45.5326531,34.2807229 L29.5093878,34.2807229 C26.9118367,34.2807229 24.797551,32.2004016 24.797551,29.6445783 L24.797551,7.44457831 L24.797551,7.44457831 L24.797551,7.44457831 Z" id="Shape" fill="#61646C"></path>
+                                        <path d="M29.5546939,29.6891566 C29.8265306,29.9863454 30.2040816,30.1497992 30.5816327,30.1497992 C30.8987755,30.1497992 31.2310204,30.0457831 31.4877551,29.8080321 L43.3126531,19.5550201 L47.1485714,22.4823293 C47.3902041,22.675502 47.6922449,22.7646586 47.9942857,22.7646586 C48.2963265,22.7646586 48.5832653,22.675502 48.84,22.4823293 L52.7967347,19.4658635 L64.5008163,29.7931727 C64.757551,30.0309237 65.0897959,30.1349398 65.4069388,30.1349398 C65.7844898,30.1349398 66.1620408,29.9863454 66.4338776,29.6891566 C66.9322449,29.1393574 66.8869388,28.27751 66.3281633,27.7871486 L55.0016327,17.786747 L66.2677551,9.18313253 C66.8718367,8.72248996 66.977551,7.87550201 66.5093878,7.29598394 C66.0412245,6.70160643 65.1804082,6.59759036 64.5914286,7.05823293 L47.9942857,19.7333333 L44.0979592,16.7465863 L31.4273469,7.07309237 C30.8232653,6.6124498 29.977551,6.71646586 29.5093878,7.31084337 C29.0412245,7.90522088 29.1469388,8.7373494 29.7510204,9.19799197 L41.1228571,17.8907631 L29.6906122,27.802008 C29.1016327,28.2923695 29.0563265,29.1393574 29.5546939,29.6891566 L29.5546939,29.6891566 Z" id="Shape" fill="#61646C"></path>
+                                        <path d="M17.76,19.8967871 C18.515102,19.8967871 19.1342857,19.2875502 19.1342857,18.5445783 C19.1342857,17.8016064 18.515102,17.1923695 17.76,17.1923695 L6.88653061,17.1923695 C6.13142857,17.1923695 5.5122449,17.8016064 5.5122449,18.5445783 C5.5122449,19.2875502 6.13142857,19.8967871 6.88653061,19.8967871 L17.76,19.8967871 L17.76,19.8967871 Z" id="Shape" class="contact-icon-fill"></path>
+                                        <path d="M1.37428571,12.7791165 L17.76,12.7791165 C18.515102,12.7791165 19.1342857,12.1698795 19.1342857,11.4269076 C19.1342857,10.6839357 18.515102,10.0746988 17.76,10.0746988 L1.37428571,10.0746988 C0.619183673,10.0746988 0,10.6839357 0,11.4269076 C0.0151020408,12.1698795 0.619183673,12.7791165 1.37428571,12.7791165 L1.37428571,12.7791165 Z" id="Shape" class="contact-icon-fill"></path>
+                                        <path d="M19.1342857,25.662249 C19.1342857,24.9192771 18.515102,24.3100402 17.76,24.3100402 L10.6016327,24.3100402 C9.84653061,24.3100402 9.22734694,24.9192771 9.22734694,25.662249 C9.22734694,26.4052209 9.84653061,27.0144578 10.6016327,27.0144578 L17.76,27.0144578 C18.515102,27.0144578 19.1342857,26.4052209 19.1342857,25.662249 L19.1342857,25.662249 Z" id="Shape" class="contact-icon-fill"></path>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+                    
+                    <h3>Can't find what <span>you're looking for?</span></h3>
+                    <a href="/contact-us" class="see-all">Contact Support</a>
+                    
+                </div>
+                
+                {% if on_index_page %}
+                    <ul>
+                        <li><span>Quick links</span></li>
+                    
+                        {% for question in most_popular_questions limit:3 %}
+                            <li>
+                                <a href="{{question.to_language_url}}" class="js_link subnav_link">
+                                  {{ question.name }}-----
+                          
+                                        {{ question.show_tags }}
+                                  
+                                </a>
+                                 
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            
+                <p class="copyright">
+                    Copyright &copy; 2016 - Powered by <a href="https://helpjuice.com"><img src="https://static.helpjuice.com/helpjuice_production/uploads/upload/image/1885/78778/logo.png" /></a>
+                </p>
+            </footer>
+            
+
+
+        </div><!-- main-content -->
+    
+    </div><!-- row container -->
+
+    
+    <!-- To show URLs in iframe -->
+    {{ javascript_includes }}
+    <script src='/assets/easyxdm/easyxdm.min.js'></script>
+    <script src='/assets/questions_widget.js'></script>
+    
+    <!-- Main Helpjuice JavaScript files -->
+    <!--[if lte IE 9]><script src="https://static.helpjuice.com/helpjuice_production/uploads/upload/image/1856/14896/match.media.combined.js"></script><![endif]-->
+    {{ responsivemenu_js }}
+    {{ typewatch_js }}
+    {{ questions_js }}
+    {{ decision_trees_js }}
+    {{ default_main_js }}
+
+    <script type="text/javascript">
+    
+        jQuery( document ).ready(function() {
+        
+          $('.main-navigation .has-sub').on('click', function(event) {
+            event.preventDefault();
+            
+            $(this).parent().toggleClass('active');
+            
+          });
+        
+        });
+    
+    </script>
+    
+
+    
+<script type="text/javascript">
+        
+        let categoryData=[];
+    
+    function fetchDataAndRenderList(url, header) {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', url, true);
+          xhr.setRequestHeader('Authorization', header); // 设置请求头部参数
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+              if (xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText); // 假设返回的是JSON数据
+                categoryData= [...data.categories]; // 渲染HTML列表
+                
+                // 获取根节点的数据
+                var rootCategories = buildTree(categoryData, null);
+                <!--console.log('rootCategories:=====');-->
+                <!--rootCategories.forEach(function(item) {-->
+                <!--console.log(item);-->
+                <!--});-->
+                // 渲染树状目录结构
+                var container = document.getElementById('test');
+                renderTree(rootCategories, container);
+              } else {
+                console.error('Failed to fetch data: ' + xhr.status);
+              }
+            }
+          };
+          xhr.send();
+        }
+        
+        function renderTree(categories, parentElement) {
+          // 创建<ul>元素作为父节点的子节点
+          var ul = document.createElement('ul');
+          categories.forEach(function(category) {
+          if (category.processed) { // 如果分类已经处理过，则跳过
+                  return;
+          }
+          
+          
+            // 创建<li>元素用于显示当前分类
+            var li = document.createElement('li');
+            var a = document.createElement('a');
+            a.href = category.to_language_url;
+            a.textContent = category.name;
+            li.appendChild(a);
+            
+            // 显示该分类下的published_questions
+    if (category.published_questions && category.published_questions.length > 0) {
+              var questionUl = document.createElement('ul');
+              category.published_questions.forEach(function(question) {
+                var questionLi = document.createElement('li');
+                var questiona = document.createElement('a');
+                questiona.href = question.to_language_url;
+                questiona.textContent = question.name;
+                <!--questiona.innerHTML = '<i class="fa fa-circle-o color=blue">' + question.name + '</i>';-->
+                <!--questiona.classList.add('custom-question'); // 添加自定义class-->
+                questionLi.appendChild(questiona);
+                questionUl.appendChild(questionLi);
+              });
+              li.appendChild(questionUl);
+    }
+    
+            if (category.sub_categories && category.sub_categories.length > 0) {
+              // 如果当前分类有子分类，则递归调用renderTree来渲染子分类
+              renderTree(category.sub_categories, li);
+              
+              
+            }
+        
+            ul.appendChild(li);
+            category.processed = true; // 标记分类为已处理
+          });
+        
+          // 将<ul>元素添加到父节点
+          if (parentElement) {
+            parentElement.appendChild(ul);
+          } else {
+            return ul;
+          }
+        }
+        
+        function buildTree(categories, parentCategoryId) {
+        if(parentCategoryId!=null){
+        
+          var childCategories = categories.filter(function(category) {
+            return category.parent && category.parent.id === parentCategoryId;
+          });
+        
+
+          if (childCategories.length === 0) {
+            return null;
+          }
+        
+          return childCategories.map(function(category) {
+            var subCategories = buildTree(categories, category.id);
+        
+            if (subCategories && subCategories.length > 0) {
+              category.sub_categories = subCategories;
+            }
+        
+            return category;
+          });
+        }else{
+            return categories.map(function(category) {
+                var subCategories = buildTree(categories, category.id);
+            
+                if (subCategories && subCategories.length > 0) {
+                  category.sub_categories = subCategories;
+                }
+            
+                return category;
+              });
+            }
+}
+
+    
+            
+      // 调用函数，传入URL和header参数
+     fetchDataAndRenderList('https://hkt.helpjuice.com/api/v3/categories', 'c079dd3d13bfeffc5652c71d478abd4e');
+
+
+
+    
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.custom-question {
+  list-style: none; /* 去除默认的列表样式 */
+  font-weight: normal; /* 取消加粗样式 */
+  font-style: normal; /* 取消斜体样式 */
+  text-decoration: none; /* 取消下划线 */
+  color: inherit; /* 继承父元素的文本颜色 */
+}
+</style>
+
+  </body>
+</html>

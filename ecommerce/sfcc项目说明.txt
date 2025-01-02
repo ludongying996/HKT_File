@@ -1,0 +1,102 @@
+
+account：dylynn.dy.lu@pccw.com
+psd：Wogaimima4133557891
+
+
+环境：
+
+	开发环境：sandbox
+
+	https://bjqd-008.dx.commercecloud.salesforce.com/on/demandware.store/Sites-Site/default/ViewApplication-DisplayWelcomePage?SelectedSiteID=3b6267fd82bce657175e57f689
+
+	https://bjqd-009.dx.commercecloud.salesforce.com/on/demandware.store/Sites-Site/default/ViewApplication-DisplayWelcomePage?SelectedSiteID=3b6267fd82bce657175e57f689
+	访问地址：https://bjqd-009.dx.commercecloud.salesforce.com/on/demandware.store/Sites-hkt-hk-Site
+
+	https://bjqd-010.dx.commercecloud.salesforce.com/on/demandware.store/Sites-Site/default/ViewApplication-DisplayWelcomePage?SelectedSiteID=3b6267fd82bce657175e57f689
+
+	测试环境：uat/development
+
+	https://development-ap01-hkt.demandware.net/on/demandware.store/Sites-Site/default/ViewApplication-SelectSite?MenuGroupID=ChannelMenu&ChannelID=&SelectedSiteRedirect=DisplayWelcomePage&csrf_token=spOdzVm2a_1-7omz02ODOuV_dZbaSg2D45LUoM-SJ64FBX91-vy4H6XjLJDMVVXGaJP6u9BhS4ZgNt9UjUXvgGQ2vpA1gWfBJirAZ2ViKyE_-CHsCIposh_jLFsft7uI1C9PZRtYXY4NfUpZjGHSVSHTySPHVeTpf3XCCYXzD87aks7UYhc=
+	访问地址：https://eshop-ccuat.hkcsl.com/on/demandware.store/Sites-hkt-hk-Site（暂时要输入access code）
+
+	预发布环境：stage（香港users会在上面做上传数据和配置各种操作）
+
+	https://staging-ap01-hkt.demandware.net/on/demandware.store/Sites-Site/default/ViewApplication-SelectSite?MenuGroupID=ChannelMenu&ChannelID=&SelectedSiteRedirect=DisplayWelcomePage&csrf_token=bvFKyTtbqDbDuNl-JPQNruFsWCuKqbzvSuQmWSG3iOa-jI48L4FiT4eDkZRrulZOLGnXKv8tMbEpIKJ94xAoyXMfDc-b_D59HGALbRc03BXoJjiDOB2KP7OFFvZ4gFDw14kWpd57l1RxEkryKa8I4Sgkfmiy3gtCflumjYf3vibrVNcZZ_0=
+	访问地址：https://staging-ap01-hkt.demandware.net/on/demandware.store/Sites-hkt-hk-Site/zh_HK/Home-ErrorNotFound（暂时要输入access code【csluat】）
+
+
+	生产环境：pro
+	访问地址：https://eshop.hkcsl.com
+
+
+
+外部交互系统：
+
+	外部系统交互数据交互图：
+	https://miro.com/app/board/o9J_lxVoN1A=/
+
+	支付中心文档：
+	账号密码都是:opp
+	https://onepaymentuat.pccw.com/ecom/documentation/integration/version/current/online-payment.html#online-payment-ecommerce-general-workflow-with-payment-service-provider---end-to-end-merchant-to-opp
+
+
+
+开发相关文档：
+
+	开发api查询：
+	入口：https://salesforcecommercecloud.github.io/b2c-dev-doc/index.html
+	sfcc的所有类属性及类方法：https://salesforcecommercecloud.github.io/b2c-dev-doc/docs/current/scriptapi/html/index.html
+	sfcc所有管道方法：https://salesforcecommercecloud.github.io/b2c-dev-doc/docs/current/pipeletapi/html/index.html
+	sfcc所有jobStep调用方法：https://salesforcecommercecloud.github.io/b2c-dev-doc/docs/current/jobstepapi/html/index.html
+
+
+
+	Storefront Reference Architecture (SFRA)底版（可以基于底版方法去开发功能）
+	入口：https://salesforcecommercecloud.github.io/b2c-dev-doc/docs/current/sfrajsdoc/index.html
+	服务端api：https://salesforcecommercecloud.github.io/b2c-dev-doc/docs/current/sfrajsdoc/js/server/index.html
+	客户端api:https://salesforcecommercecloud.github.io/b2c-dev-doc/docs/current/sfrajsdoc/js/client/index.html
+
+	sfcc-底版代码：
+	https://github.com/SalesforceCommerceCloud/storefront-reference-architecture
+
+	底版配置教程（初学者教程）：
+	https://developer.salesforce.com/docs/commerce/sfra/guide/sfra-learn-more.html
+	https://trailhead.salesforce.com/zh-CN/content/learn/modules/b2c-developer-resources-and-tools/b2c-developer-install-config-sfra?trail_id=develop-for-commerce-cloud
+
+
+	如何debug:
+	https://medium.com/@bhanujbawdhane/debugging-salesforce-cloud-commerce-app-using-vs-code-dcb6c3b2ebe
+	https://github.com/sfccdevops/sfcc-devtools
+	
+	
+	sfcc-ci：(用于在本地用命令上传代码、数据等操作)
+	https://github.com/SalesforceCommerceCloud/sfcc-ci
+	
+	
+	新建sandbox环境手動配置:
+	Deploy & activate code version
+	Import site data
+	Add private key and certificate
+	Update aliases
+
+
+	B2C Commerce API：（用api或者sdk模式开发，目前不用这些模式，目前的开发模式是基于SFRA底版去开发）
+	入口：https://developer.salesforce.com/docs/commerce/commerce-api/guide/get-started.html
+		OCAPI 23.2：
+		api交互分shop api,data api,meta api
+		介绍：https://resources.docs.salesforce.com/rel1/doc/en-us/static/pdf/OpenCommerceAPI.pdf?_ga=2.130416777.748605261.1698639158-506310635.1694062966
+		入口：https://developer.salesforce.com/docs/commerce/b2c-commerce/references/b2c-commerce-ocapi/get-started-with-ocapi.html
+
+
+教程：
+
+	sfcc b2c 开发者官方教程：
+	https://developer.salesforce.com/
+	https://developer.salesforce.com/developer-centers/commerce-cloud
+	https://developer.salesforce.com/docs/commerce/b2c-commerce/guide/b2c-custom.html
+	帮助中心：https://help.salesforce.com/s/articleView?id=cc.b2c_access_keys_for_business_manager.htm&type=5
+
+
+	sfcc非官方教程：
+	https://sfcclearning.com/sfra-course/sfra-github-download/
+	https://sfcclearning.com/infocenter/content/b2c_commerce/topics/salesforce_payments/b2c_salesforce_payments_plugin.php

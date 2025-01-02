@@ -1,0 +1,52 @@
+List<sObject> objs = Database.query('select id, name, Maximum_Registration__c, event_start_date__c from event__c limit 100');
+List<String> fieldApiNames = new List<String> { 'Name', 'Maximum_Registration__c', 'Event_Start_Date__c' };
+ 
+// ----------------------------------------------------
+ 
+SObjectType objType = null;
+if (objs.size() > 0) {
+    objType = objs[0].getSObjectType();
+}
+else {
+    system.debug('No records to be processed.');
+    return;
+}
+ 
+Map<String, SObjectField> fieldDescMap = objType.getDescribe().fields.getMap();
+ 
+Integer index_Objs = 0;
+Integer rowListSize = objs.size();
+Integer headerSize = fieldApiNames.size();
+ 
+String csvContent;
+for(sObject row : objs){
+    Map<String, Object> objFieldMap = (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(row));
+    system.debug(JSON.serialize(row));
+    Integer index_fieldApiNames = 0;
+    for(String fieldApiName : fieldApiNames){
+        index_fieldApiNames++;
+        SObjectField field = fieldDescMap.get(fieldApiName);    
+        DisplayType fieldType = fieldDescMap.get(fieldApiName).getDescribe().getType();
+        String rawValue = String.valueOf(objFieldMap.get(fieldApiName));
+        String fieldValue;
+        if (fieldType == DisplayType.DateTime) {
+            fieldValue = ((DateTime)JSON.deserialize(rawValue, DateTime.class)).format('yyyy-MM-dd HH:mm:ss');
+        }
+        else {
+            fieldValue = rawValue;
+        }
+        csvContent += field != null ? fieldValue : '';
+        csvContent += index_fieldApiNames != headerSize ? ',' : '';
+    }
+    index_Objs++;
+    if(index_Objs != rowListSize) {
+        csvContent += '\n';
+    }
+}
+ 
+system.debug(csvContent);
+
+
+
+
+Database.executeBatch(new EM_DynamicReportEmail());

@@ -1,0 +1,36 @@
+<template>
+    <lightning-combobox
+        name="numberSelector"
+        label={selectLabel}
+        value={selectedNumber}
+        placeholder="Select a number"
+        options={numberOptions}
+        onchange={handleNumberChange}>
+    </lightning-combobox>
+
+    <template if:true={guestInfos}>
+        <template for:each={guestInfos} for:item="field" >
+            <div key={field.id} class="slds-m-bottom_small">
+                <lightning-input
+                    label="Name"
+                    value={field.name}
+                    data-id={field.id}
+                    onchange={handleNameChange}
+                ></lightning-input>
+                <lightning-input
+                    label="Phone Number"
+                    value={field.phoneNumbers}
+                    data-id={field.id}
+                    onchange={handlePhoneNumberChange}
+                ></lightning-input>
+            </div>
+        </template>
+    </template>
+
+        <!-- For debugging purpose
+        <template if:true={guestInfos.length}>
+            <p>Names: {names}</p>
+            <p>Phones: {phoneNumbers}</p>
+            <p>======: {guestInfosStr}</p>
+        </template> -->
+</template>
